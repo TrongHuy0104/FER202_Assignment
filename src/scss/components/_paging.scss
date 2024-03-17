@@ -1,0 +1,53 @@
+@use "../abstracts";
+.paging {
+    margin-top: 50px;
+    &__list {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+    }
+
+    &__item {
+        &--active .paging__link {
+            border-color: #0071dc;
+            background-color: #0071dc;
+            color: #fff;
+        }
+
+        &--active .paging__link {
+            cursor: default;
+            pointer-events: none;
+            user-select: none;
+        }
+    }
+
+    &__link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 50px;
+        min-width: 50px;
+        padding: 0 16px;
+        font-size: 1.6rem;
+        font-weight: 500;
+        background-color: var(--paging-bg);
+        border: 1px solid var(--paging-border-bg);
+        border-radius: 4px;
+        transition: color, background-color, border;
+        user-select: none;
+        transition-duration: 0.2s;
+
+        &:hover .icon {
+            filter: var(--paging-icon-hover-color);
+        }
+
+        &:hover {
+            background-color: var(--paging-hover-bg);
+            background-color: #0071dc;
+            border-color: var(--paging-border-hover-bg);
+            border-color: #0071dc;
+            color: var(--paging-text-hover-bg);
+        }
+    }
+}

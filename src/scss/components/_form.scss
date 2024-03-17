@@ -1,0 +1,200 @@
+@use "../abstracts";
+.form {
+    &__label {
+        font-size: 2.2rem;
+        font-weight: 500;
+        line-height: 145.455%;
+
+        &--small {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+            line-height: 142.857%;
+        }
+    }
+
+    &__select-wrap {
+        display: flex;
+        height: 45px;
+        align-items: center;
+        border-radius: 6px;
+        border: 1px solid #d2d1d6;
+    }
+
+    &__select {
+        height: calc(100% - 10px);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 14px;
+        font-size: 1.4rem;
+        font-weight: 500;
+        line-height: 142.857%;
+        min-width: var(--width, 108px);
+        cursor: pointer;
+
+        @include abstracts.screen(lg) {
+            flex: 1;
+        }
+    }
+
+    &__select + &__select {
+        border-left: 1px solid #d2d1d6;
+    }
+
+    &__tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 20px;
+
+        @include abstracts.screen(sm) {
+            gap: 10px 9px;
+        }
+    }
+
+    &__tag {
+        padding: 0 12px;
+        height: 32px;
+        background-color: var(--form-tag-color);
+        border-radius: 6px;
+
+        color: #9e9da8;
+        font-size: 1.4rem;
+        font-weight: 500;
+        line-height: 142.857%;
+        transition: color 0.2s;
+
+        &:hover {
+            color: var(--text-color);
+        }
+    }
+
+    &__group {
+        width: 100%;
+        position: relative;
+        margin-top: 30px;
+
+        &.invalid .form__text-input {
+            border-color: #f33a58;
+        }
+
+        &--inline {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+        }
+
+        @include abstracts.screen(md) {
+            margin-top: 20px;
+        }
+    }
+
+    &__text-input:focus-within {
+        border-color: #77dae6;
+    }
+
+    &__text-input,
+    &__input {
+        @include abstracts.screen(md) {
+            font-size: 1.6rem;
+        }
+    }
+
+    &__text-input,
+    &__text-area {
+        height: 50px;
+        display: flex;
+        align-items: center;
+        padding: 0 12px;
+        border-radius: 10px;
+        border: 1.5px solid #d2d1d6;
+
+        @include abstracts.screen(md) {
+            height: 48px;
+        }
+    }
+
+    &__text-area {
+        height: 100px;
+        padding: 12px;
+    }
+
+    &__input,
+    &__text-area-input {
+        flex: 1;
+        height: 100%;
+        font-size: 1.8rem;
+        font-weight: 500;
+        line-height: 144.444%;
+
+        &::placeholder {
+            color: #d2d1d6;
+        }
+
+        &-icon {
+            margin-left: 12px;
+        }
+    }
+
+    &__checkbox {
+        position: relative;
+        user-select: none;
+
+        &:has(:checked)::before {
+            background-color: #ffb700;
+            border-color: #ffb700;
+        }
+
+        &:has(:checked)::after {
+            width: 15px;
+            height: 8px;
+            border: 3px solid;
+            border-color: transparent transparent #fff #fff;
+            rotate: -45deg;
+            left: 2px;
+            top: 3px;
+        }
+        &-label {
+            margin-left: 29px;
+            color: #9e9da8;
+            font-size: 1.5rem;
+            font-weight: 500;
+            line-height: 146.667%;
+
+            @include abstracts.screen(md) {
+                font-size: 1.4rem;
+            }
+        }
+
+        &::after,
+        &::before {
+            content: "";
+            position: absolute;
+        }
+
+        &::before {
+            width: 19px;
+            height: 19px;
+            border: 1.5px solid #9e9da8;
+            border-radius: 5px;
+        }
+    }
+
+    &__row {
+        display: flex;
+        gap: 30px;
+    }
+
+    &__message {
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: #f33a58;
+        margin-top: 10px;
+        display: block;
+        text-align: left;
+    }
+
+    &__pull-right {
+        margin-left: auto;
+    }
+}

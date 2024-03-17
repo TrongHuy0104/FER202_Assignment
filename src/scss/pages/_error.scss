@@ -1,0 +1,23 @@
+.error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
+    &__img {
+        max-width: 370px;
+    }
+
+    &__message {
+        max-width: 570px;
+        text-align: center;
+        font-size: 1.8rem;
+        font-weight: 400;
+        line-height: 166.667%;
+        margin: 38px 0;
+    }
+
+    &__cta {
+        min-width: 150px;
+    }
+}
