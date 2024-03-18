@@ -1,23 +1,39 @@
 import { useEffect, useState } from "react";
 import Button from "./Button";
-import Form from "./Form";
+
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
+import { dataReceived, deleteProduct } from "../features/productSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { Form } from "react-router-dom";
 
 function ProductTable() {
-  const [products, setProducts] = useState([]);
+  const { products } = useSelector((store) => store.products);
   const [isModalOpen, setModalOpen] = useState(false);
-  const BASE_URL = "http://localhost:9999";
-  useEffect(
-    function () {
-      async function fetchProducts() {
-        const res = await fetch(`${BASE_URL}/products`);
-        const data = await res.json();
+  const [selectedProductId, setSelectedProductId] = useState(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
-        setProducts(() => data);
-      }
-      fetchProducts();
-    },
-    [setProducts]
-  );
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(dataReceived());
+  }, [dispatch]);
+
+  const handleDeleteClick = (productId) => {
+    setSelectedProductId(productId);
+    setShowConfirmModal(true);
+    console.log(productId);
+  };
+
+  const handleConfirmDelete = () => {
+    if (selectedProductId) {
+      dispatch(deleteProduct(selectedProductId));
+    }
+    setShowConfirmModal(false);
+  };
+
+  const handleCancelDelete = () => {
+    setShowConfirmModal(false);
+  };
+
 
   return (
     <div className="container">
@@ -30,7 +46,6 @@ function ProductTable() {
         + Add
       </Button>
       {isModalOpen && <Form onClick={() => setModalOpen(false)} />}
-
       <div className="table__responsive">
         <table className="table table__striped">
           <thead>
@@ -44,15 +59,33 @@ function ProductTable() {
             </tr>
           </thead>
           <tbody>
-            {products.map((product) => (
-              <tr key={product.id}>
-                <td>{product.id}</td>
-                <td>{product.name}</td>
-                <td>{product.description}</td>
-                <td>{product.price}</td>
-                <td>{product.currentPrice}</td>
-              </tr>
-            ))}
+            {products.length === 0 ? ( <img className="table_image" src="./src/assets/img/no-product-found.jpg" alt="No Products Available"/>   
+            ) : (
+              products.map((product, index) => (
+                <tr key={product.id}>
+                  <td>{index + 1}</td>
+                  <td>{product.name}</td>
+                  <td>{product.description}</td>
+                  <td>{product.price}</td>
+                  <td>{product.currentPrice}</td>
+                  <td>
+                    {/* Add delete button */}
+                    <Button
+                      type="btn--danger btn--primary btn--no-margin"
+                      onClick={() => handleDeleteClick(product.id)}
+                    >
+                      Delete
+                    </Button>
+                  </td>
+                </tr>
+              ))
+            )}
+            {showConfirmModal && (
+              <ConfirmDeleteModal
+                onDelete={handleConfirmDelete}
+                onCancel={handleCancelDelete}
+              />
+            )}
           </tbody>
         </table>
       </div>

@@ -21,8 +21,22 @@ const productSlice = createSlice({
     add(state, action) {
       state.products = [...state.products, action.payload];
     },
+    deleteProduct(state, action) {
+      state.products = state.products.filter(product => product.id !== action.payload);
+  }
   },
 });
+
+export function deleteProduct(productId) {
+  return async function(dispatch) {
+     await fetch(`http://localhost:9999/products/${productId}`, {
+      method: 'DELETE',
+    });
+          
+          dispatch({ type: 'product/deleteProduct', payload: productId });
+        
+  };
+}
 
 export function dataReceived() {
   return async function (dispatch) {
@@ -43,5 +57,9 @@ export function add(newProduct) {
   };
 }
 
-export const { dataFail } = productSlice.actions;
+
+
+
+
+export const { dataFail} = productSlice.actions;
 export default productSlice.reducer;
