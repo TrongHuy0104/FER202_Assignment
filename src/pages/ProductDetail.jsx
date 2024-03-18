@@ -92,15 +92,14 @@
 // export default ProductDetail;
 
 import Navbar from "../components/Navbar";
-import products from "../data/products";
-import { useParams } from "react-router-dom";
+// import products from "../data/products";
+import { useSelector } from "react-redux";
 
 function ProductDetail() {
-  const { id } = useParams();
-  const product = products.find((product) => product.id === id);
-  if (!product) {
-    return <div>Product not found</div>;
-  }
+  const selectedProduct = useSelector(
+    (state) => state.products.selectedProduct
+  );
+
   return (
     <div>
       <Navbar />
@@ -112,7 +111,7 @@ function ProductDetail() {
                 <div className="product-preview">
                   <div className="product-preview__item">
                     <img
-                      src={product.image}
+                      src={selectedProduct.image}
                       alt=""
                       className="product-preview__img js-slideshow-thumb"
                     />
@@ -122,18 +121,20 @@ function ProductDetail() {
               <div className="col-7 col-xl-6 col-lg-12">
                 <form action="">
                   <section className="product-info">
-                    <h1 className="product-info__heading">{product.name}</h1>
+                    <h1 className="product-info__heading">
+                      {selectedProduct.name}
+                    </h1>
                     <div className="row">
                       <div className="col-5 col-xxl-6 col-xl-12">
                         <div className="product-properties">
                           <div className="product-property">
                             <h4 className="product-property__title">
-                              {product.description}
+                              {selectedProduct.description}
                             </h4>
                           </div>
                           <div className="product-property">
                             <h4 className="product-property__title">
-                              {product.review}
+                              {selectedProduct.review}
                             </h4>
                           </div>
                         </div>
@@ -145,13 +146,13 @@ function ProductDetail() {
                           </div>
                           <div className="product-property">
                             <h4 className="product-property__title">
-                              {product.currentPrice}
+                              {selectedProduct.currentPrice}
                             </h4>
                           </div>
 
                           <div className="product-property">
                             <h4 className="product-property__title">
-                              {product.discount}
+                              {selectedProduct.discount}
                             </h4>
                           </div>
                         </div>
