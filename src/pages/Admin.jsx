@@ -4,14 +4,14 @@ import Navbar from "../components/Navbar";
 import ProductTable from "../components/ProductTable";
 
 function Admin() {
-    return (
-        <>
-            <Navbar />
-            <ProductTable />
-            {/* <ConfirmDeleteModal /> */}
-            {/* <Form /> */}
-        </>
-    );
+  return (
+    <>
+      <Navbar />
+      <ProductTable />
+      {/* <ConfirmDeleteModal /> */}
+      {/* <Form /> */}
+    </>
+  );
 }
 
 export default Admin;

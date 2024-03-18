@@ -1,109 +1,109 @@
 // Filter Button
 .filter-btn {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    height: 36px;
-    padding: 0 14px;
-    color: var(--filter-btn-color);
-    font-size: 1.4rem;
-    font-weight: 700;
-    line-height: 142.857%;
-    border-radius: 6px;
-    background: var(--filter-btn-bg);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 36px;
+  padding: 0 14px;
+  color: var(--filter-btn-color);
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 142.857%;
+  border-radius: 6px;
+  background: var(--filter-btn-bg);
 }
 
 // Like Button
 .like-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    box-shadow: 0px 20px 60px rgba(124, 124, 124, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  box-shadow: 0px 20px 60px rgba(124, 124, 124, 0.2);
 
-    &--liked &__icon {
-        display: none;
-    }
+  &--liked &__icon {
+    display: none;
+  }
 
-    &:not(&--liked) &__icon--liked {
-        display: none;
-    }
+  &:not(&--liked) &__icon--liked {
+    display: none;
+  }
 
-    &__icon--liked {
-        margin-top: 8px;
-    }
+  &__icon--liked {
+    margin-top: 8px;
+  }
 }
 
 // Buttons
 .btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    height: 46px;
-    padding: 0 20px;
-    border-radius: 6px;
-    background: #f8f8fb;
-    font-size: 1.8rem;
-    font-weight: 500;
-    white-space: nowrap;
-    user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 46px;
+  padding: 0 20px;
+  border-radius: 6px;
+  background: #f8f8fb;
+  font-size: 1.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+  user-select: none;
 
-    + .btn {
-        &:not(.btn--no-margin) {
-            margin-left: 20px;
-        }
+  + .btn {
+    &:not(.btn--no-margin) {
+      margin-left: 20px;
     }
+  }
 
-    &--text {
-        background-color: transparent;
-        color: #9e9da8;
-        font-weight: 400;
-    }
+  &--text {
+    background-color: transparent;
+    color: #9e9da8;
+    font-weight: 400;
+  }
 
-    &--primary {
-        color: #171c28;
-        background-color: #ffb700;
-    }
+  &--primary {
+    color: #171c28;
+    background-color: #ffb700;
+  }
 
-    &--delete {
-        color: #fff;
-        background-color: #d62e2ef0;
-    }
-    &--edit {
-        color: #fff;
-        background-color: #1579dcf0;
-    }
+  &--delete {
+    color: #fff;
+    background-color: #d62e2ef0;
+  }
+  &--edit {
+    color: #fff;
+    background-color: #1579dcf0;
+  }
 
-    &--edit,
-    &--delete {
-        padding: 0 16px;
-        height: 40px;
-    }
+  &--edit,
+  &--delete {
+    padding: 0 16px;
+    height: 40px;
+  }
 
-    &--outline {
-        background-color: transparent;
-        border: 1px solid #d2d1d6;
-    }
+  &--outline {
+    background-color: transparent;
+    border: 1px solid #d2d1d6;
+  }
 
-    &--rounded {
-        border-radius: 99px;
-    }
+  &--rounded {
+    border-radius: 99px;
+  }
 
-    &--danger {
-        color: #fff;
-        background: #ed4337;
-    }
+  &--danger {
+    color: #fff;
+    background: #ed4337;
+  }
 
-    &[disabled],
-    &--disabled {
-        opacity: 0.5;
-        pointer-events: none;
-    }
+  &[disabled],
+  &--disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
 
-    &:hover {
-        opacity: 0.9;
-    }
+  &:hover {
+    opacity: 0.9;
+  }
 }
