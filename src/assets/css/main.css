@@ -3380,6 +3380,19 @@ html.dark {
   align-items: center;
   gap: 10px;
 }
+.table .table_image {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  margin: 20px auto;
+  display: block;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+.table .table_image:hover {
+  transform: scale(1.05);
+}
 
 .modal__overlay,
 .modal {
