@@ -15,7 +15,10 @@ const productSlice = createSlice({
       state.products = action.payload;
     },
     productSelected(state, action) {
-      state.selectedProduct = action.payload;
+      const selectedProductId = action.payload.id;
+      state.selectedProduct = state.products.find(
+        (product) => product.id === selectedProductId
+      );
     },
     setLoading(state, action) {
       state.isLoading = action.payload;

@@ -53,6 +53,7 @@ function ProductItem() {
   useEffect(() => {
     dispatch(dataReceived());
   }, [dispatch]);
+
   const handleProductClick = (product) => {
     dispatch(productSelected(product));
   };
@@ -67,7 +68,7 @@ function ProductItem() {
                   <div className="product-card__thumb-wrap">
                     <Link
                       to={`/product-detail/${product.id}`}
-                      onClick={handleProductClick(product)}
+                      onClick={() => handleProductClick(product)}
                     >
                       <img
                         src={product.image}
@@ -79,7 +80,7 @@ function ProductItem() {
                   <h3 className="product-card__title">
                     <Link
                       to={`/product-detail/${product.id}`}
-                      onClick={handleProductClick(product)}
+                      onClick={() => handleProductClick(product)}
                     >
                       {product.name}
                     </Link>

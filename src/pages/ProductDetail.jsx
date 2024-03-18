@@ -100,6 +100,11 @@ function ProductDetail() {
     (state) => state.products.selectedProduct
   );
 
+  // const price = parseFloat(selectedProduct.price);
+  // const curPrice = parseFloat(selectedProduct.currentPriceprice);
+  // const discount = ((price - curPrice) / price) * 100;
+  // console.log(curPrice, discount);
+
   return (
     <div>
       <Navbar />
@@ -132,29 +137,26 @@ function ProductDetail() {
                               {selectedProduct.description}
                             </h4>
                           </div>
-                          <div className="product-property">
-                            <h4 className="product-property__title">
-                              {selectedProduct.review}
-                            </h4>
-                          </div>
                         </div>
                       </div>
                       <div className="col-7 col-xxl-6 col-xl-12">
                         <div className="product-properties">
                           <div className="product-property">
-                            <h4 className="product-property__title">Price</h4>
+                            <h4 className="product-property__title">
+                              Current Price: {selectedProduct.currentPrice}
+                            </h4>
                           </div>
                           <div className="product-property">
                             <h4 className="product-property__title">
-                              {selectedProduct.currentPrice}
+                              Old Price: {selectedProduct.price}
                             </h4>
                           </div>
 
-                          <div className="product-property">
+                          {/* <div className="product-property">
                             <h4 className="product-property__title">
-                              {selectedProduct.discount}
+                              Discount: {discount}%
                             </h4>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     </div>
