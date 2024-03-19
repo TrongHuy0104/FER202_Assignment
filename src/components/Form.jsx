@@ -1,14 +1,82 @@
+import { useState } from "react";
 import Button from "./Button";
+import { useDispatch } from "react-redux";
+import { add } from "../features/productSlice";
 
-function Form() {
+function Form({ isShowAddForm, setIsShowAddForm }) {
+    const dispatch = useDispatch();
+    const [inputFields, setInputFields] = useState({
+        name: "",
+        price: "",
+        currentPrice: "",
+        description: "",
+        image: "",
+    });
+    const [errors, setErrors] = useState({});
+
+    function handleChangeInput(e) {
+        setErrors({});
+        if (e.target.name === "image") {
+            setInputFields({
+                ...inputFields,
+                [e.target.name]: URL.createObjectURL(e.target.files[0]),
+            });
+        } else
+            setInputFields({ ...inputFields, [e.target.name]: e.target.value });
+    }
+
+    const validateValues = (inputValues) => {
+        let errors = {};
+        if (!inputValues.name) errors.name = "Please enter this field";
+        if (!inputValues.description)
+            errors.description = "Please enter this field";
+        if (!inputValues.image) errors.image = "Please enter this field";
+
+        if (!inputValues.price) {
+            errors.price = "Please enter this field";
+        } else if (!/^[1-9][0-9]*$/.test(inputValues.price)) {
+            errors.price = "Please enter natural number!";
+        }
+
+        if (!inputValues.currentPrice) {
+            errors.currentPrice = "Please enter this field";
+        } else if (!/^[1-9][0-9]*$/.test(inputValues.currentPrice)) {
+            errors.currentPrice = "Please enter natural number!";
+        }
+
+        return errors;
+    };
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        const errorList = validateValues(inputFields);
+        setErrors(errorList);
+
+        if (Object.keys(errorList).length !== 0) return;
+        const tempProduct = {
+            name: inputFields.name,
+            price: inputFields.price,
+            currentPrice: inputFields.currentPrice,
+            image: inputFields.image,
+            description: inputFields.description,
+        };
+        dispatch(add(tempProduct));
+        setIsShowAddForm(false);
+    }
     return (
         <div
             id="add-new-address"
-            className="modal show"
+            className={`modal ${isShowAddForm ? "show" : ""}`}
             style={{ "--content-width": "650px" }}
         >
+            {/* <img src={inputFields.image} /> */}
             <div className="modal__content">
-                <form action="" className="form">
+                <form
+                    action=""
+                    id="addForm"
+                    className="form"
+                    onSubmit={handleSubmit}
+                >
                     <h2 className="modal__heading">Add new product</h2>
                     <div className="modal__body">
                         <div className="form__group">
@@ -25,7 +93,8 @@ function Form() {
                                     id="name"
                                     placeholder="Name"
                                     className="form__input"
-                                    required=""
+                                    value={inputFields.name}
+                                    onChange={handleChangeInput}
                                 ></input>
                                 <img
                                     src="./assets/icons/form-error.svg"
@@ -33,8 +102,8 @@ function Form() {
                                     className="form__input-icon-error"
                                 ></img>
                             </div>
-                            <p className="form__error">
-                                {/* Name must be at least 2 characters */}
+                            <p className="form__message">
+                                {errors.name && errors.name}
                             </p>
                         </div>
                         <div className="form__row">
@@ -47,12 +116,13 @@ function Form() {
                                 </label>
                                 <div className="form__text-input form__text-input--small">
                                     <input
-                                        type="text"
+                                        type="number"
                                         name="price"
                                         id="price"
                                         placeholder="Price"
                                         className="form__input"
-                                        required=""
+                                        value={inputFields.price}
+                                        onChange={handleChangeInput}
                                     ></input>
                                     <img
                                         src="./assets/icons/form-error.svg"
@@ -60,8 +130,8 @@ function Form() {
                                         className="form__input-icon-error"
                                     ></img>
                                 </div>
-                                <p className="form__error">
-                                    {/* Name must be at least 2 characters */}
+                                <p className="form__message">
+                                    {errors.price && errors.price}
                                 </p>
                             </div>
                             <div className="form__group">
@@ -73,12 +143,13 @@ function Form() {
                                 </label>
                                 <div className="form__text-input form__text-input--small">
                                     <input
-                                        type="tel"
-                                        name="current-price"
+                                        type="number"
+                                        name="currentPrice"
                                         id="current-price"
-                                        placeholder="Phone"
+                                        placeholder="Current Price"
                                         className="form__input"
-                                        required=""
+                                        value={inputFields.currentPrice}
+                                        onChange={handleChangeInput}
                                     ></input>
                                     <img
                                         src="./assets/icons/form-error.svg"
@@ -86,8 +157,8 @@ function Form() {
                                         className="form__input-icon-error"
                                     ></img>
                                 </div>
-                                <p className="form__error">
-                                    {/* Phone must be at least 10 characters */}
+                                <p className="form__message">
+                                    {errors.currentPrice && errors.currentPrice}
                                 </p>
                             </div>
                         </div>
@@ -106,19 +177,21 @@ function Form() {
                                     placeholder="Image"
                                     accept="image/png, image/jpeg"
                                     className="form__input"
-                                    required=""
+                                    onChange={handleChangeInput}
                                     style={{ height: "auto" }}
                                 ></input>
+
                                 <img
                                     src="./assets/icons/form-error.svg"
                                     alt=""
                                     className="form__input-icon-error"
                                 ></img>
                             </div>
-                            <p className="form__error">
-                                {/* Phone must be at least 10 characters */}
+                            <p className="form__message">
+                                {errors.image && errors.image}
                             </p>
                         </div>
+
                         <div className="form__group">
                             <label
                                 htmlFor="desc"
@@ -128,11 +201,12 @@ function Form() {
                             </label>
                             <div className="form__text-area">
                                 <textarea
-                                    name="desc"
+                                    name="description"
                                     id="desc"
                                     placeholder="Description"
                                     className="form__text-area-input"
-                                    required=""
+                                    value={inputFields.description}
+                                    onChange={handleChangeInput}
                                 ></textarea>
                                 <img
                                     src="./assets/icons/form-error.svg"
@@ -140,25 +214,43 @@ function Form() {
                                     className="form__input-icon-error"
                                 ></img>
                             </div>
-                            <p className="form__error">
-                                {/* Address not empty */}
+                            <p className="form__message">
+                                {errors.description && errors.description}
                             </p>
                         </div>
                     </div>
-                    <div className="modal__bottom">
-                        <Button type="btn--outline" className="modal__btn">
-                            Cancel
-                        </Button>
-                        <Button
-                            type=" btn--primary btn--no-margin"
-                            className="modal__btn"
-                        >
-                            Create
-                        </Button>
-                    </div>
                 </form>
+                <div className="modal__bottom">
+                    <Button
+                        type="btn--outline"
+                        className="modal__btn"
+                        onClick={() => {
+                            setInputFields({
+                                name: "",
+                                price: "",
+                                currentPrice: "",
+                                description: "",
+                                image: "",
+                            });
+                            setErrors({});
+                            setIsShowAddForm(false);
+                        }}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        form="addForm"
+                        type=" btn--primary btn--no-margin"
+                        className="modal__btn"
+                    >
+                        Create
+                    </Button>
+                </div>
             </div>
-            <div className="modal__overlay"></div>
+            <div
+                className="modal__overlay"
+                onClick={() => setIsShowAddForm(false)}
+            ></div>
         </div>
     );
 }

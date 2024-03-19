@@ -1,29 +1,34 @@
-function ProductItem() {
+import { Link } from "react-router-dom";
+
+function ProductItem({ product }) {
     return (
         <div className="col">
             <article className="product-card">
                 <div className="product-card__thumb-wrap">
-                    <a href="./product-detail.html">
+                    <Link to={`/product-detail?id=${product.id}`}>
                         <img
-                            src="./src/assets/img/product/item-1.png"
+                            src={`${
+                                product.image.includes("http://")
+                                    ? product.image
+                                    : `/src/assets/img/product/${product.image}`
+                            }`}
                             alt=""
                             className="product-card__thumb"
                         />
-                    </a>
+                    </Link>
                 </div>
                 <h3 className="product-card__title">
-                    <a href="./product-detail.html">
-                        Coffee Beans - Espresso Arabica and Robusta Beans
-                    </a>
+                    <Link to={`product-detail?id=${product.id}`}>
+                        <h3>{product.name}</h3>
+                    </Link>
                 </h3>
-                <p className="product-card__branch">
-                    "Core i5-1240P, Ram 16GB, SSD 512GB, màn hình 14 inch QHD
-                    IPS, Win 11bản quyền, màu bạc"
-                </p>
+                <p className="product-card__branch">{product.description}</p>
                 <div className="product-card__row">
-                    <span className="product-card__price">$47.00</span>
                     <span className="product-card__price product-card__price--old">
-                        $47.00
+                        {product.price}
+                    </span>
+                    <span className="product-card__price">
+                        {product.currentPrice}
                     </span>
                 </div>
             </article>

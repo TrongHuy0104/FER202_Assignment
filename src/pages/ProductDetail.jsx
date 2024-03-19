@@ -1,6 +1,15 @@
+import { useSearchParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { useSelector } from "react-redux";
 
 function ProductDetail() {
+    const [searchParams] = useSearchParams();
+    const id = searchParams.get("id");
+    const { products } = useSelector((store) => store.products);
+    const currentProduct = products.at(id - 1);
+    function convertToNumber(value) {
+        return parseFloat(value.replace(/\./g, ""));
+    }
     return (
         <div>
             <Navbar />
@@ -12,7 +21,7 @@ function ProductDetail() {
                                 <div className="product-preview">
                                     <div className="product-preview__item">
                                         <img
-                                            src="./src/assets/img/product/item-1.png"
+                                            src={`./src/assets/img/product/${currentProduct.image}`}
                                             alt=""
                                             className="product-preview__img js-slideshow-thumb"
                                         />
@@ -23,30 +32,21 @@ function ProductDetail() {
                                 <form action="">
                                     <section className="product-info">
                                         <h1 className="product-info__heading">
-                                            Coffee Beans - Espresso Arabica and
-                                            Robusta Beans
+                                            {currentProduct.name}
                                         </h1>
                                         <div className="row">
                                             <div className="col-5 col-xxl-6 col-xl-12">
                                                 <div className="product-properties">
                                                     <div className="product-property">
                                                         <h4 className="product-property__title">
-                                                            Descriptions
+                                                            Description
                                                         </h4>
                                                     </div>
                                                     <div className="product-property">
                                                         <h4 className="product-property__title">
-                                                            (3.5) 1100 reviews
-                                                        </h4>
-                                                    </div>
-                                                    <div className="product-property">
-                                                        <h4 className="product-property__title">
-                                                            (3.5) 1100 reviews
-                                                        </h4>
-                                                    </div>
-                                                    <div className="product-property">
-                                                        <h4 className="product-property__title">
-                                                            (3.5) 1100 reviews
+                                                            {
+                                                                currentProduct.description
+                                                            }
                                                         </h4>
                                                     </div>
                                                 </div>
@@ -60,18 +60,37 @@ function ProductDetail() {
                                                     </div>
                                                     <div className="product-property">
                                                         <h4 className="product-property__title">
-                                                            Price: 1000 (d)
-                                                        </h4>
-                                                    </div>
-                                                    <div className="product-property">
-                                                        <h4 className="product-property__title">
-                                                            Current Price: 1000
+                                                            Price:{" "}
+                                                            {
+                                                                currentProduct.currentPrice
+                                                            }
+                                                            {"  "}
                                                             (d)
                                                         </h4>
                                                     </div>
                                                     <div className="product-property">
                                                         <h4 className="product-property__title">
-                                                            Discount: 20%
+                                                            Current Price:{" "}
+                                                            {
+                                                                currentProduct.price
+                                                            }
+                                                            (d)
+                                                        </h4>
+                                                    </div>
+                                                    <div className="product-property">
+                                                        <h4 className="product-property__title">
+                                                            Discount:{" "}
+                                                            {Math.round(
+                                                                (1 -
+                                                                    convertToNumber(
+                                                                        currentProduct.currentPrice
+                                                                    ) /
+                                                                        convertToNumber(
+                                                                            currentProduct.price
+                                                                        )) *
+                                                                    100
+                                                            )}
+                                                            %
                                                         </h4>
                                                     </div>
                                                 </div>
