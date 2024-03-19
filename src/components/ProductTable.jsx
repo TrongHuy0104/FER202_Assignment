@@ -1,6 +1,31 @@
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { dataReceived } from "../features/productSlice";
 import Button from "./Button";
+import FormEdit from "./FormEdit";
 
 function ProductTable() {
+
+    const { products } = useSelector((store) => store.products);
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [dataProductEdit, setDataProductEdit] = useState({});
+  
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+      dispatch(dataReceived());
+    }, [dispatch]);
+
+    const handleCloseModal = () => {
+      setModalOpen(false);
+    };
+
+    const handleEdit = (products) => {
+        console.log(products);
+        setDataProductEdit(products);
+        setModalOpen(true);
+    };
+
     return (
         <div className="container">
             <h2 className="table__heading">Products Management</h2>
@@ -17,48 +42,30 @@ function ProductTable() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr scope="row">
-                            <td>1392</td>
+                        {products.map((product) => (
+                            <tr key={product.id}>
+                            <td>{product.id}</td>
+                            <td>{product.name}</td>
+                            <td>{product.description}</td>
+                            <td>{product.price}</td>
+                            <td>{product.currentPrice}</td>
                             <td>
-                                <a href="#">James Yates</a>
-                            </td>
-                            <td>
-                                Web Designer
-                                <small className="d-block">
-                                    Far far away, behind the word mountains
-                                </small>
-                            </td>
-                            <td>+63 983 0962 971</td>
-                            <td>NY University</td>
-                            <td>
-                                <Button type="btn--edit">Edit</Button>
-                                <Button
+                            <Button onClick={() => handleEdit(product)} className="btn--no-margin" type="btn--primary">
+                             Edit
+                            </Button>
+                                {isModalOpen && <FormEdit 
+                                onCloseModal={handleCloseModal} 
+                                dataProductEdit={dataProductEdit}
+                                />}
+                            <Button
                                     type="btn--delete"
                                     className="btn--no-margin"
                                 >
                                     Delete
                                 </Button>
-                            </td>
-                        </tr>
-                        <tr scope="row">
-                            <td>1392</td>
-                            <td>
-                                <a href="#">James Yates</a>
-                            </td>
-                            <td>
-                                Web Designer
-                                <small className="d-block">
-                                    Far far away, behind the word mountains
-                                </small>
-                            </td>
-                            <td>+63 983 0962 971</td>
-                            <td>NY University</td>
-                            <td>
-                                <a href="#" className="more">
-                                    Details
-                                </a>
-                            </td>
-                        </tr>
+                                </td>
+              </tr>
+            ))} 
                     </tbody>
                 </table>
             </div>
