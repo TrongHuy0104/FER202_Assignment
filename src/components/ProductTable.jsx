@@ -1,23 +1,21 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { dataReceived } from "../features/productSlice";
 import Button from "./Button";
 import Form from "./Form";
 
 function ProductTable() {
-  const [products, setProducts] = useState([]);
+  const { products } = useSelector((store) => store.products);
   const [isModalOpen, setModalOpen] = useState(false);
-  const BASE_URL = "http://localhost:9999";
-  useEffect(
-    function () {
-      async function fetchProducts() {
-        const res = await fetch(`${BASE_URL}/products`);
-        const data = await res.json();
 
-        setProducts(() => data);
-      }
-      fetchProducts();
-    },
-    [setProducts]
-  );
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(dataReceived());
+  }, [dispatch]);
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
 
   return (
     <div className="container">
@@ -29,7 +27,7 @@ function ProductTable() {
       >
         + Add
       </Button>
-      {isModalOpen && <Form onClick={() => setModalOpen(false)} />}
+      {isModalOpen && <Form onCloseModal={handleCloseModal} />}
 
       <div className="table__responsive">
         <table className="table table__striped">
