@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     products: [],
     isLoading: false,
+    currentProduct: null,
 };
 
 const productSlice = createSlice({
@@ -27,6 +28,28 @@ const productSlice = createSlice({
         add(state, action) {
             state.products = [...state.products, action.payload];
         },
+        getProductById(state, action) {
+            state.currentProduct = action.payload;
+        },
+        edit: {
+            prepare(id, data) {
+                return {
+                    payload: {
+                        id,
+                        data,
+                    },
+                };
+            },
+            reducer(state, action) {
+                state.products = state.products.map((product) => {
+                    if (product.id === action.payload.id) {
+                        return action.payload.data;
+                    } else {
+                        return product;
+                    }
+                });
+            },
+        },
     },
 });
 
@@ -39,6 +62,22 @@ export function dataReceived() {
             );
             const data = await res.json();
             dispatch({ type: "products/dataReceived", payload: data });
+        } catch (error) {
+            alert(error.message);
+        } finally {
+            dispatch({ type: "products/finish" });
+        }
+    };
+}
+export function getProductById(id) {
+    return async function (dispatch) {
+        dispatch({ type: "products/loading" });
+        try {
+            const res = await fetch(
+                `https://65f09d10da8c6584131c25ad.mockapi.io/products/${id}`
+            );
+            const data = await res.json();
+            dispatch({ type: "products/getProductById", payload: data });
         } catch (error) {
             alert(error.message);
         } finally {
@@ -78,6 +117,33 @@ export function remove(id) {
                 }
             );
             dispatch({ type: "products/remove", payload: id });
+        } catch (error) {
+            alert(error.message);
+        } finally {
+            dispatch({ type: "products/finish" });
+        }
+    };
+}
+export function edit(id, updateValue) {
+    return async function (dispatch) {
+        dispatch({ type: "products/loading" });
+        try {
+            const res = await fetch(
+                `https://65f09d10da8c6584131c25ad.mockapi.io/products/${id}`,
+                {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(updateValue),
+                }
+            );
+            const data = await res.json();
+            dispatch({
+                type: "products/edit",
+                payload: {
+                    id,
+                    data,
+                },
+            });
         } catch (error) {
             alert(error.message);
         } finally {

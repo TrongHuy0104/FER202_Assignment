@@ -6,11 +6,13 @@ import Spinner from "./Spinner";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import { Link } from "react-router-dom";
 import Form from "./Form";
+import EditForm from "./EditForm";
 
 function ProductTable() {
     const { isLoading, products } = useSelector((store) => store.products);
     const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
     const [isShowAddForm, setIsShowAddForm] = useState(false);
+    const [isShowEditForm, setIsShowEditForm] = useState(false);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -59,7 +61,16 @@ function ProductTable() {
                                     <td>{product.price}</td>
                                     <td>{product.currentPrice}</td>
                                     <td>
-                                        <Button type="btn--edit">Edit</Button>
+                                        <Link to={`?id=${product.id}`}>
+                                            <Button
+                                                type="btn--edit"
+                                                onClick={() =>
+                                                    setIsShowEditForm(true)
+                                                }
+                                            >
+                                                Edit
+                                            </Button>
+                                        </Link>
                                         <Link to={`?id=${product.id}`}>
                                             <Button
                                                 type="btn--delete"
@@ -84,6 +95,10 @@ function ProductTable() {
                 <Form
                     isShowAddForm={isShowAddForm}
                     setIsShowAddForm={setIsShowAddForm}
+                />
+                <EditForm
+                    isShowEditForm={isShowEditForm}
+                    setIsShowEditForm={setIsShowEditForm}
                 />
             </div>
         </div>

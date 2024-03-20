@@ -1,18 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "./Button";
 import Spinner from "./Spinner";
 import { useDispatch, useSelector } from "react-redux";
-import { add } from "../features/productSlice";
+import { add, edit, getProductById } from "../features/productSlice";
+import { useSearchParams } from "react-router-dom";
 
-function Form({ isShowAddForm, setIsShowAddForm }) {
-    const { isLoading } = useSelector((store) => store.products);
+function Form({ isShowEditForm, setIsShowEditForm }) {
+    const [searchParams] = useSearchParams();
+    const id = searchParams.get("id");
+    const { isLoading, products } = useSelector((store) => store.products);
     const dispatch = useDispatch();
+    useEffect(() => {
+        const currentProduct = products.find((product) => product.id === id);
+        setInputFields({
+            name: currentProduct?.name,
+            price: currentProduct?.price,
+            currentPrice: currentProduct?.currentPrice,
+            description: currentProduct?.description,
+            image: currentProduct?.image,
+        });
+    }, [id, dispatch]);
     const [inputFields, setInputFields] = useState({
         name: "",
         price: "",
         currentPrice: "",
         description: "",
-        image: "",
+        image: null,
     });
     const [errors, setErrors] = useState({});
 
@@ -62,8 +75,8 @@ function Form({ isShowAddForm, setIsShowAddForm }) {
             image: inputFields.image,
             description: inputFields.description,
         };
-        dispatch(add(tempProduct));
-        setIsShowAddForm(false);
+        dispatch(edit(id, tempProduct));
+        setIsShowEditForm(false);
         setInputFields({
             name: "",
             price: "",
@@ -76,13 +89,13 @@ function Form({ isShowAddForm, setIsShowAddForm }) {
     return (
         <div
             id="add-new-address"
-            className={`modal ${isShowAddForm ? "show" : ""}`}
+            className={`modal ${isShowEditForm ? "show" : ""}`}
             style={{ "--content-width": "650px" }}
         >
             <div className="modal__content">
                 <form
                     action=""
-                    id="addForm"
+                    id="editForm"
                     className="form"
                     onSubmit={handleSubmit}
                 >
@@ -242,23 +255,23 @@ function Form({ isShowAddForm, setIsShowAddForm }) {
                                 image: null,
                             });
                             setErrors({});
-                            setIsShowAddForm(false);
+                            setIsShowEditForm(false);
                         }}
                     >
                         Cancel
                     </Button>
                     <Button
-                        form="addForm"
+                        form="editForm"
                         type=" btn--primary btn--no-margin"
                         className="modal__btn"
                     >
-                        Create
+                        Edit
                     </Button>
                 </div>
             </div>
             <div
                 className="modal__overlay"
-                onClick={() => setIsShowAddForm(false)}
+                onClick={() => setIsShowEditForm(false)}
             ></div>
         </div>
     );
