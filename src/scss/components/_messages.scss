@@ -10,4 +10,8 @@
         border: 1px solid #5bc45f;
         background: rgba(39, 243, 117, 0.2);
     }
+    &--error {
+        border: 1px solid #c0392d;
+        background: rgba(206, 49, 28, 0.2);
+    }
 }

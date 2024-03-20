@@ -1,9 +1,37 @@
+import { useDispatch, useSelector } from "react-redux";
 import Button from "./Button";
+import { dataReceived } from "../features/productSlice";
+import { useEffect, useState } from "react";
+import Spinner from "./Spinner";
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
+import { Link } from "react-router-dom";
+import Form from "./Form";
+import EditForm from "./EditForm";
 
 function ProductTable() {
+    const { isLoading, products } = useSelector((store) => store.products);
+    const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
+    const [isShowAddForm, setIsShowAddForm] = useState(false);
+    const [isShowEditForm, setIsShowEditForm] = useState(false);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(dataReceived());
+    }, [dispatch]);
+
     return (
         <div className="container">
             <h2 className="table__heading">Products Management</h2>
+            <Button
+                type="btn--primary"
+                className="btn--no-margin"
+                onClick={() => {
+                    setIsShowAddForm(true);
+                }}
+            >
+                Add New Product
+            </Button>
+            {isLoading && <Spinner />}
             <div className="table__responsive">
                 <table className="table table__striped">
                     <thead>
@@ -17,50 +45,61 @@ function ProductTable() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr scope="row">
-                            <td>1392</td>
-                            <td>
-                                <a href="#">James Yates</a>
-                            </td>
-                            <td>
-                                Web Designer
-                                <small className="d-block">
-                                    Far far away, behind the word mountains
-                                </small>
-                            </td>
-                            <td>+63 983 0962 971</td>
-                            <td>NY University</td>
-                            <td>
-                                <Button type="btn--edit">Edit</Button>
-                                <Button
-                                    type="btn--delete"
-                                    className="btn--no-margin"
-                                >
-                                    Delete
-                                </Button>
-                            </td>
-                        </tr>
-                        <tr scope="row">
-                            <td>1392</td>
-                            <td>
-                                <a href="#">James Yates</a>
-                            </td>
-                            <td>
-                                Web Designer
-                                <small className="d-block">
-                                    Far far away, behind the word mountains
-                                </small>
-                            </td>
-                            <td>+63 983 0962 971</td>
-                            <td>NY University</td>
-                            <td>
-                                <a href="#" className="more">
-                                    Details
-                                </a>
-                            </td>
-                        </tr>
+                        {products.length === 0 ? (
+                            <img
+                                className="table__image"
+                                src="https://bepharco.com/no-products-found.png"
+                            />
+                        ) : (
+                            products.map((product, index) => (
+                                <tr scope="row" key={product.description}>
+                                    <td>{index + 1}</td>
+                                    <td>
+                                        <a href="#">{product.name}</a>
+                                    </td>
+                                    <td>{product.description}</td>
+                                    <td>{product.price}</td>
+                                    <td>{product.currentPrice}</td>
+                                    <td>
+                                        <Link to={`?id=${product.id}`}>
+                                            <Button
+                                                type="btn--edit"
+                                                onClick={() =>
+                                                    setIsShowEditForm(true)
+                                                }
+                                            >
+                                                Edit
+                                            </Button>
+                                        </Link>
+                                        <Link to={`?id=${product.id}`}>
+                                            <Button
+                                                type="btn--delete"
+                                                className="btn--no-margin"
+                                                onClick={() => {
+                                                    setIsShowDeleteModal(true);
+                                                }}
+                                            >
+                                                Delete
+                                            </Button>
+                                        </Link>
+                                    </td>
+                                </tr>
+                            ))
+                        )}
                     </tbody>
                 </table>
+                <ConfirmDeleteModal
+                    isShowDeleteModal={isShowDeleteModal}
+                    setIsShowDeleteModal={setIsShowDeleteModal}
+                />
+                <Form
+                    isShowAddForm={isShowAddForm}
+                    setIsShowAddForm={setIsShowAddForm}
+                />
+                <EditForm
+                    isShowEditForm={isShowEditForm}
+                    setIsShowEditForm={setIsShowEditForm}
+                />
             </div>
         </div>
     );

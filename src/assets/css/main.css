@@ -2509,8 +2509,11 @@ html.dark {
 }
 
 .product-card {
+  display: flex;
+  flex-direction: column;
   padding: 16px;
   border-radius: 20px;
+  height: 100%;
   background: var(--product-card-bg);
   box-shadow: 0px 20px 60px 10px var(--product-card-shadow);
 }
@@ -2929,6 +2932,10 @@ html.dark {
 .message--success {
   border: 1px solid #5bc45f;
   background: rgba(39, 243, 117, 0.2);
+}
+.message--error {
+  border: 1px solid #c0392d;
+  background: rgba(206, 49, 28, 0.2);
 }
 
 .breadcrumbs {
@@ -3478,6 +3485,26 @@ html.dark {
 @media (max-width: 767.98px) {
   .modal__btn {
     flex: 1;
+  }
+}
+.spinner {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  background: conic-gradient(rgba(0, 0, 0, 0) 10%, #fff);
+  -webkit-mask: radial-gradient(farthest-side, rgba(0, 0, 0, 0) calc(100% - 8px), #000 0);
+  animation: rotate 1.5s infinite linear;
+}
+.spinner__container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(1turn);
   }
 }
 .home {
